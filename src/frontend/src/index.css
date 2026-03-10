@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Playfair Display (Display Serif) ── */
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
+}
+
+/* ── General Sans (Body) ── */
+@font-face {
+  font-family: "General Sans";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+}
+
+@layer base {
+  :root {
+    /* ── Deep luxury palette — black, gold, cream ── */
+    --background: 0.1 0 0;
+    --foreground: 0.97 0.012 88;
+
+    --card: 0.14 0 0;
+    --card-foreground: 0.97 0.012 88;
+
+    --popover: 0.13 0 0;
+    --popover-foreground: 0.97 0.012 88;
+
+    /* FIX 2 — Warmer, deeper gold with higher chroma */
+    --primary: 0.76 0.13 76;
+    --primary-foreground: 0.08 0 0;
+
+    --secondary: 0.19 0.01 0;
+    --secondary-foreground: 0.97 0.012 88;
+
+    --muted: 0.21 0.01 0;
+    --muted-foreground: 0.62 0.02 78;
+
+    --accent: 0.76 0.13 76;
+    --accent-foreground: 0.08 0 0;
+
+    --destructive: 0.55 0.22 27;
+    --destructive-foreground: 0.97 0 0;
+
+    --border: 0.24 0.02 78;
+    --input: 0.21 0.01 0;
+    --ring: 0.76 0.13 76;
+
+    /* Sharp luxury — no softness */
+    --radius: 0rem;
+
+    /* Hotel-specific tokens — richer gold palette */
+    --gold: 0.76 0.13 76; /* warm antique gold */
+    --gold-light: 0.88 0.1 78; /* bright highlight */
+    --gold-dark: 0.56 0.15 68; /* deep burnished */
+    --gold-muted: 0.7 0.08 76; /* subtle accent */
+    --cream: 0.96 0.015 88;
+    --obsidian: 0.075 0 0;
+
+    /* Charts */
+    --chart-1: 0.76 0.13 76;
+    --chart-2: 0.65 0.1 72;
+    --chart-3: 0.55 0.08 68;
+    --chart-4: 0.45 0.05 65;
+    --chart-5: 0.35 0.03 60;
+
+    /* Sidebar */
+    --sidebar: 0.09 0 0;
+    --sidebar-foreground: 0.97 0.012 88;
+    --sidebar-primary: 0.76 0.13 76;
+    --sidebar-primary-foreground: 0.08 0 0;
+    --sidebar-accent: 0.19 0.01 0;
+    --sidebar-accent-foreground: 0.97 0.012 88;
+    --sidebar-border: 0.24 0.02 78;
+    --sidebar-ring: 0.76 0.13 76;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "General Sans", system-ui, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+}
+
+/* ── Custom colour utilities ── */
+@layer utilities {
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+  .text-gold-light {
+    color: oklch(var(--gold-light));
+  }
+  .text-gold-muted {
+    color: oklch(var(--gold-muted));
+  }
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+  .bg-gold-dark {
+    background-color: oklch(var(--gold-dark));
+  }
+  .bg-obsidian {
+    background-color: oklch(var(--obsidian));
+  }
+  .bg-cream {
+    background-color: oklch(var(--cream));
+  }
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+  .border-gold-muted {
+    border-color: oklch(var(--gold-muted));
+  }
+
+  .font-display {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+  .font-body {
+    font-family: "General Sans", system-ui, sans-serif;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-12 xl:px-20;
+  }
+
+  /* FIX 2 — Rich 3-stop gold text gradient */
+  .gold-text-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.92 0.1 80) 0%,
+      oklch(0.76 0.15 72) 45%,
+      oklch(0.6 0.18 62) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.76 0.13 76),
+      oklch(0.56 0.15 68)
+    );
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* FIX 2 — Gold CTA button with shimmer sweep on hover                        */
+/* ──────────────────────────────────────────────────────────────────────────── */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+  background-color: oklch(var(--gold));
+  color: oklch(var(--obsidian));
+  font-family: "General Sans", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 0;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.btn-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.55s ease;
+}
+.btn-gold:hover::after {
+  transform: translateX(100%);
+}
+.btn-gold:hover {
+  background-color: oklch(var(--gold-dark));
+  box-shadow: 0 6px 36px oklch(0.76 0.13 76 / 0.4);
+}
+
+/* Gold outline button */
+.btn-gold-outline {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid oklch(var(--gold));
+  color: oklch(var(--gold));
+  font-family: "General Sans", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+.btn-gold-outline:hover {
+  background-color: oklch(var(--gold) / 0.12);
+}
+
+/* ── Section ornament divider ── */
+.section-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 auto;
+  pointer-events: none;
+}
+.section-ornament::before,
+.section-ornament::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 64px;
+  background: oklch(var(--gold-muted) / 0.5);
+}
+.section-ornament-diamond {
+  width: 6px;
+  height: 6px;
+  background: oklch(var(--gold));
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ── Animations ── */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.10s;
+  opacity: 0;
+}
+.animate-delay-200 {
+  animation-delay: 0.22s;
+  opacity: 0;
+}
+.animate-delay-300 {
+  animation-delay: 0.36s;
+  opacity: 0;
+}
+.animate-delay-400 {
+  animation-delay: 0.50s;
+  opacity: 0;
+}
+.animate-delay-500 {
+  animation-delay: 0.64s;
+  opacity: 0;
+}
+
+/* ── Lightbox overlay ── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.96);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
