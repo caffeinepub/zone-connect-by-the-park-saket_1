@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Fraunces (Luxury Display Serif) ── */
+/* ── Fraunces (Display Serif) ── */
 @font-face {
   font-family: "Fraunces";
   font-style: normal;
@@ -11,7 +11,7 @@
   src: url("/assets/fonts/Fraunces.woff2") format("woff2");
 }
 
-/* ── Playfair Display (Secondary Serif) ── */
+/* ── Playfair Display ── */
 @font-face {
   font-family: "Playfair Display";
   font-style: normal;
@@ -20,57 +20,61 @@
   src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
 }
 
-/* ── General Sans (Body) ── */
+/* ── Figtree (Body) ── */
 @font-face {
-  font-family: "General Sans";
+  font-family: "Figtree";
   font-style: normal;
-  font-weight: 200 700;
+  font-weight: 300 900;
   font-display: swap;
-  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
 }
 
 @layer base {
   :root {
-    /* ── Wedding Photography Dark Luxury Theme ── */
-    --background: 0.1 0 0;
-    --foreground: 0.97 0.005 90;
+    /* ── Harish Pure Honey – Warm Golden & Nature Green Theme ── */
+    --background: 0.97 0.012 88;
+    --foreground: 0.18 0.02 50;
 
-    --card: 0.14 0.005 60;
-    --card-foreground: 0.97 0.005 90;
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.02 50;
 
-    --popover: 0.14 0.005 60;
-    --popover-foreground: 0.97 0.005 90;
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.02 50;
 
-    --primary: 0.76 0.12 80;
-    --primary-foreground: 0.1 0 0;
+    --primary: 0.62 0.14 58;
+    --primary-foreground: 1 0 0;
 
-    --secondary: 0.18 0.005 60;
-    --secondary-foreground: 0.97 0.005 90;
+    --secondary: 0.92 0.025 90;
+    --secondary-foreground: 0.18 0.02 50;
 
-    --muted: 0.2 0.003 60;
-    --muted-foreground: 0.62 0.01 80;
+    --muted: 0.94 0.012 88;
+    --muted-foreground: 0.5 0.02 60;
 
-    --accent: 0.76 0.12 80;
-    --accent-foreground: 0.1 0 0;
+    --accent: 0.38 0.1 155;
+    --accent-foreground: 1 0 0;
 
     --destructive: 0.55 0.22 25;
-    --destructive-foreground: 0.97 0 0;
+    --destructive-foreground: 1 0 0;
 
-    --border: 0.26 0.018 75;
-    --input: 0.18 0.005 60;
-    --ring: 0.76 0.12 80;
+    --border: 0.88 0.025 85;
+    --input: 0.92 0.015 88;
+    --ring: 0.62 0.14 58;
 
-    /* ── Gold Palette ── */
-    --gold-light: 0.9 0.1 88;
-    --gold: 0.76 0.12 80;
-    --gold-dark: 0.6 0.12 72;
-    --gold-subtle: 0.76 0.12 80 / 0.12;
+    /* ── Honey Palette ── */
+    --honey-light: 0.88 0.13 85;
+    --honey: 0.72 0.16 60;
+    --honey-dark: 0.55 0.17 50;
+    --honey-amber: 0.65 0.18 55;
 
-    --cream: 0.96 0.008 90;
-    --charcoal: 0.12 0.005 60;
-    --charcoal-light: 0.18 0.005 60;
+    /* ── Nature Green Palette ── */
+    --green-light: 0.75 0.12 155;
+    --green: 0.45 0.13 155;
+    --green-dark: 0.32 0.11 155;
 
-    --radius: 0.125rem;
+    --cream: 0.97 0.012 88;
+    --warm-white: 0.99 0.005 90;
+
+    --radius: 0.5rem;
   }
 }
 
@@ -84,7 +88,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-cream text-foreground font-body;
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -101,52 +105,36 @@
 }
 
 @layer utilities {
-  /* Scroll-triggered fade-in animation */
   .animate-on-scroll {
     opacity: 0;
     transform: translateY(28px);
     transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s
       cubic-bezier(0.22, 1, 0.36, 1);
   }
-
   .animate-on-scroll.in-view {
     opacity: 1;
     transform: translateY(0);
   }
-
-  .animate-on-scroll-delay-1 {
+  .delay-100 {
     transition-delay: 0.1s;
   }
-  .animate-on-scroll-delay-2 {
+  .delay-200 {
     transition-delay: 0.2s;
   }
-  .animate-on-scroll-delay-3 {
+  .delay-300 {
     transition-delay: 0.3s;
   }
-  .animate-on-scroll-delay-4 {
+  .delay-400 {
     transition-delay: 0.4s;
   }
 
-  /* Film grain overlay */
-  .grain-texture::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 192px 192px;
-  }
-
-  .gold-shimmer {
+  .honey-shimmer {
     background: linear-gradient(
       105deg,
-      oklch(0.76 0.12 80) 0%,
-      oklch(0.9 0.1 88) 40%,
-      oklch(0.76 0.12 80) 60%,
-      oklch(0.6 0.12 72) 100%
+      oklch(0.72 0.16 60) 0%,
+      oklch(0.88 0.13 85) 40%,
+      oklch(0.72 0.16 60) 60%,
+      oklch(0.55 0.17 50) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -155,38 +143,92 @@
     animation: shimmer 5s linear infinite;
   }
 
-  .gold-text {
-    color: oklch(0.76 0.12 80);
+  .honey-text {
+    color: oklch(0.62 0.16 58);
   }
 
-  .gold-border {
-    border-color: oklch(0.76 0.12 80);
-  }
-
-  /* Gold glow for premium card */
-  .gold-glow {
-    box-shadow: 0 0 0 1px oklch(0.76 0.12 80 / 0.8), 0 0 40px
-      oklch(0.76 0.12 80 / 0.12), 0 0 80px oklch(0.76 0.12 80 / 0.06), inset 0
-      1px 0 oklch(0.9 0.1 88 / 0.15);
-  }
-
-  /* Hover lift */
-  .hover-lift {
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s
-      cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  .green-text {
+    color: oklch(0.38 0.12 155);
   }
 
   .whatsapp-pulse::before {
     content: "";
     position: absolute;
-    inset: -4px;
+    inset: -5px;
     border-radius: 50%;
-    background: rgba(37, 211, 102, 0.35);
-    animation: pulse 2.5s ease-in-out infinite;
+    background: rgba(37, 211, 102, 0.3);
+    animation: pulse-ring 2.5s ease-in-out infinite;
+  }
+
+  .section-divider {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(0.72 0.16 60 / 0.4),
+      transparent
+    );
+    height: 1px;
+  }
+
+  .hex-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23D4820A' fill-opacity='0.06' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
   }
 }

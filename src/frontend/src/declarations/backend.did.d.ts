@@ -11,26 +11,15 @@ import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
 export interface Inquiry {
-  'weddingDate' : Time,
-  'serviceType' : ServiceType,
+  'name' : string,
   'message' : string,
   'timestamp' : Time,
-  'coupleNames' : string,
-  'phoneNumber' : string,
+  'phone' : string,
 }
-export type ServiceType = { 'destinationWedding' : null } |
-  { 'bridalPortrait' : null } |
-  { 'candidPhotography' : null } |
-  { 'weddingPhotography' : null } |
-  { 'preWeddingShoot' : null } |
-  { 'cinematicFilm' : null };
 export type Time = bigint;
 export interface _SERVICE {
   'getAllInquiries' : ActorMethod<[], Array<Inquiry>>,
-  'submitInquiry' : ActorMethod<
-    [string, Time, string, ServiceType, string],
-    undefined
-  >,
+  'submitInquiry' : ActorMethod<[string, string, string], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

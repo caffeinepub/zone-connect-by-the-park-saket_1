@@ -2,36 +2,23 @@ import List "mo:core/List";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
 import Array "mo:core/Array";
+import Migration "migration";
 
-
-
+(with migration = Migration.run)
 actor {
-  type ServiceType = {
-    #weddingPhotography;
-    #preWeddingShoot;
-    #candidPhotography;
-    #cinematicFilm;
-    #bridalPortrait;
-    #destinationWedding;
-  };
-
   type Inquiry = {
-    coupleNames : Text;
-    weddingDate : Time.Time;
-    phoneNumber : Text;
-    serviceType : ServiceType;
+    name : Text;
+    phone : Text;
     message : Text;
     timestamp : Time.Time;
   };
 
   let inquiryList = List.empty<Inquiry>();
 
-  public shared ({ caller }) func submitInquiry(coupleNames : Text, weddingDate : Time.Time, phoneNumber : Text, serviceType : ServiceType, message : Text) : async () {
+  public shared ({ caller }) func submitInquiry(name : Text, phone : Text, message : Text) : async () {
     let inquiry : Inquiry = {
-      coupleNames;
-      weddingDate;
-      phoneNumber;
-      serviceType;
+      name;
+      phone;
       message;
       timestamp = Time.now();
     };

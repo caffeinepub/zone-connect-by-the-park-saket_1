@@ -90,135 +90,46 @@ export class ExternalBlob {
     }
 }
 export interface Inquiry {
-    weddingDate: Time;
-    serviceType: ServiceType;
+    name: string;
     message: string;
     timestamp: Time;
-    coupleNames: string;
-    phoneNumber: string;
+    phone: string;
 }
 export type Time = bigint;
-export enum ServiceType {
-    destinationWedding = "destinationWedding",
-    bridalPortrait = "bridalPortrait",
-    candidPhotography = "candidPhotography",
-    weddingPhotography = "weddingPhotography",
-    preWeddingShoot = "preWeddingShoot",
-    cinematicFilm = "cinematicFilm"
-}
 export interface backendInterface {
     getAllInquiries(): Promise<Array<Inquiry>>;
-    submitInquiry(coupleNames: string, weddingDate: Time, phoneNumber: string, serviceType: ServiceType, message: string): Promise<void>;
+    submitInquiry(name: string, phone: string, message: string): Promise<void>;
 }
-import type { Inquiry as _Inquiry, ServiceType as _ServiceType, Time as _Time } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async getAllInquiries(): Promise<Array<Inquiry>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getAllInquiries();
-                return from_candid_vec_n1(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getAllInquiries();
-            return from_candid_vec_n1(this._uploadFile, this._downloadFile, result);
-        }
-    }
-    async submitInquiry(arg0: string, arg1: Time, arg2: string, arg3: ServiceType, arg4: string): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.submitInquiry(arg0, arg1, arg2, to_candid_ServiceType_n6(this._uploadFile, this._downloadFile, arg3), arg4);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.submitInquiry(arg0, arg1, arg2, to_candid_ServiceType_n6(this._uploadFile, this._downloadFile, arg3), arg4);
+            const result = await this.actor.getAllInquiries();
             return result;
         }
     }
-}
-function from_candid_Inquiry_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Inquiry): Inquiry {
-    return from_candid_record_n3(_uploadFile, _downloadFile, value);
-}
-function from_candid_ServiceType_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ServiceType): ServiceType {
-    return from_candid_variant_n5(_uploadFile, _downloadFile, value);
-}
-function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    weddingDate: _Time;
-    serviceType: _ServiceType;
-    message: string;
-    timestamp: _Time;
-    coupleNames: string;
-    phoneNumber: string;
-}): {
-    weddingDate: Time;
-    serviceType: ServiceType;
-    message: string;
-    timestamp: Time;
-    coupleNames: string;
-    phoneNumber: string;
-} {
-    return {
-        weddingDate: value.weddingDate,
-        serviceType: from_candid_ServiceType_n4(_uploadFile, _downloadFile, value.serviceType),
-        message: value.message,
-        timestamp: value.timestamp,
-        coupleNames: value.coupleNames,
-        phoneNumber: value.phoneNumber
-    };
-}
-function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    destinationWedding: null;
-} | {
-    bridalPortrait: null;
-} | {
-    candidPhotography: null;
-} | {
-    weddingPhotography: null;
-} | {
-    preWeddingShoot: null;
-} | {
-    cinematicFilm: null;
-}): ServiceType {
-    return "destinationWedding" in value ? ServiceType.destinationWedding : "bridalPortrait" in value ? ServiceType.bridalPortrait : "candidPhotography" in value ? ServiceType.candidPhotography : "weddingPhotography" in value ? ServiceType.weddingPhotography : "preWeddingShoot" in value ? ServiceType.preWeddingShoot : "cinematicFilm" in value ? ServiceType.cinematicFilm : value;
-}
-function from_candid_vec_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Inquiry>): Array<Inquiry> {
-    return value.map((x)=>from_candid_Inquiry_n2(_uploadFile, _downloadFile, x));
-}
-function to_candid_ServiceType_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ServiceType): _ServiceType {
-    return to_candid_variant_n7(_uploadFile, _downloadFile, value);
-}
-function to_candid_variant_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: ServiceType): {
-    destinationWedding: null;
-} | {
-    bridalPortrait: null;
-} | {
-    candidPhotography: null;
-} | {
-    weddingPhotography: null;
-} | {
-    preWeddingShoot: null;
-} | {
-    cinematicFilm: null;
-} {
-    return value == ServiceType.destinationWedding ? {
-        destinationWedding: null
-    } : value == ServiceType.bridalPortrait ? {
-        bridalPortrait: null
-    } : value == ServiceType.candidPhotography ? {
-        candidPhotography: null
-    } : value == ServiceType.weddingPhotography ? {
-        weddingPhotography: null
-    } : value == ServiceType.preWeddingShoot ? {
-        preWeddingShoot: null
-    } : value == ServiceType.cinematicFilm ? {
-        cinematicFilm: null
-    } : value;
+    async submitInquiry(arg0: string, arg1: string, arg2: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.submitInquiry(arg0, arg1, arg2);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.submitInquiry(arg0, arg1, arg2);
+            return result;
+        }
+    }
 }
 export interface CreateActorOptions {
     agent?: Agent;

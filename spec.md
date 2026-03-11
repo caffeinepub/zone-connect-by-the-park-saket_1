@@ -1,26 +1,24 @@
-# Zone Connect by The Park Saket Delhi - Hotel Website
+# Harish Pure Honey
 
 ## Current State
-New project. No existing code.
+New project -- no existing code.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full premium hotel website with 10 sections
-- Hero section with luxury imagery, headline, Book Now / Call Now CTAs
-- About section with hotel story and location highlights
-- Rooms & Suites section with room types, amenities, pricing, Book Now buttons
-- Hotel Facilities section with icon grid
-- Location Advantage section with proximity highlights and embedded Google Map
-- Guest Reviews section with 5-star testimonials
-- Photo Gallery section
-- Special Offers section (Weekend Deals, Business Travel Packages, Long Stay Discount)
-- Direct Booking CTA section with urgency messaging
-- Contact section with address, phone, map, contact form, WhatsApp button
-- Sticky header with phone CTA
+- Full single-page website for Harish Pure Honey
+- Hero section with headline, subheadline, WhatsApp + Call CTAs
+- About section: natural beekeeping, no chemicals, no sugar mixing, traditional methods
+- Benefits section: immunity, digestion, energy, skin health
+- Why Choose Us: 4 trust pillars
+- Customer Reviews / Testimonials
+- Order CTA section
+- FAQ accordion
+- Contact section
 - Floating WhatsApp button
-- SEO meta tags and schema markup for local hotel
-- Trust badges and conversion optimization elements
+- Mobile-first responsive design
+- SEO meta tags and JSON-LD schema
+- Trust badges: Pure, Natural, Organic
 
 ### Modify
 N/A
@@ -29,9 +27,11 @@ N/A
 N/A
 
 ## Implementation Plan
-- Backend: Simple contact/booking inquiry form with name, email, phone, check-in/check-out dates, message stored in canister
-- Frontend: Single-page React app with smooth scroll navigation, all 10 sections, mobile-first responsive layout
-- Design: Black, gold (#C9A84C), white color palette, premium serif/sans-serif typography
-- Images: AI-generated luxury hotel imagery for hero, rooms, facilities, gallery
-- Conversion: Sticky CTA bar, floating WhatsApp, urgency badges, multiple Book Now buttons
-- SEO: Meta tags, structured data (Hotel schema), local keywords in content
+1. Backend: store contact/order leads from a simple inquiry form
+2. Frontend: single-page site with golden honey, white, nature green color palette
+3. All sections as listed above
+4. WhatsApp link: wa.me/919350247746
+5. Phone: tel:+919350247746
+6. Floating WhatsApp button fixed on all screen sizes
+7. Mobile bottom bar with Call + WhatsApp
+8. JSON-LD LocalBusiness schema for SEO
