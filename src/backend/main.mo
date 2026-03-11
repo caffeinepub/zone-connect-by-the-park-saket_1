@@ -1,31 +1,34 @@
 import List "mo:core/List";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
-import Array "mo:core/Array";
 import Migration "migration";
 
 (with migration = Migration.run)
 actor {
-  type Inquiry = {
+  type Submission = {
     name : Text;
+    email : Text;
     phone : Text;
+    company : Text;
     message : Text;
     timestamp : Time.Time;
   };
 
-  let inquiryList = List.empty<Inquiry>();
+  let submissionList = List.empty<Submission>();
 
-  public shared ({ caller }) func submitInquiry(name : Text, phone : Text, message : Text) : async () {
-    let inquiry : Inquiry = {
+  public shared ({ caller }) func submitForm(name : Text, email : Text, phone : Text, company : Text, message : Text) : async () {
+    let submission : Submission = {
       name;
+      email;
       phone;
+      company;
       message;
       timestamp = Time.now();
     };
-    inquiryList.add(inquiry);
+    submissionList.add(submission);
   };
 
-  public query ({ caller }) func getAllInquiries() : async [Inquiry] {
-    inquiryList.toArray();
+  public query ({ caller }) func getAllSubmissions() : async [Submission] {
+    submissionList.toArray();
   };
 };

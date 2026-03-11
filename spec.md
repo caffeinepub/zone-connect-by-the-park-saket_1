@@ -1,24 +1,14 @@
-# Harish Pure Honey
+# Dhiraj Bundiwal – YouTube Creator Personal Brand Website
 
 ## Current State
-New project -- no existing code.
+New project. No existing frontend or backend.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full single-page website for Harish Pure Honey
-- Hero section with headline, subheadline, WhatsApp + Call CTAs
-- About section: natural beekeeping, no chemicals, no sugar mixing, traditional methods
-- Benefits section: immunity, digestion, energy, skin health
-- Why Choose Us: 4 trust pillars
-- Customer Reviews / Testimonials
-- Order CTA section
-- FAQ accordion
-- Contact section
-- Floating WhatsApp button
-- Mobile-first responsive design
-- SEO meta tags and JSON-LD schema
-- Trust badges: Pure, Natural, Organic
+- Full personal brand website for YouTube creator Dhiraj Bundiwal
+- Dark + neon theme (dark background, neon red/yellow accents matching YouTube creator aesthetic)
+- Mobile-first, fast-loading, high-engagement design
 
 ### Modify
 N/A
@@ -27,11 +17,25 @@ N/A
 N/A
 
 ## Implementation Plan
-1. Backend: store contact/order leads from a simple inquiry form
-2. Frontend: single-page site with golden honey, white, nature green color palette
-3. All sections as listed above
-4. WhatsApp link: wa.me/919350247746
-5. Phone: tel:+919350247746
-6. Floating WhatsApp button fixed on all screen sizes
-7. Mobile bottom bar with Call + WhatsApp
-8. JSON-LD LocalBusiness schema for SEO
+
+### Sections
+1. **Hero** – Creator photo (uploaded image), headline "Welcome to Dhiraj Bundiwal Official Channel", CTA: Subscribe YouTube + Follow Instagram
+2. **About** – Short creator bio, niche (Vlogs, Entertainment, Village Life, Shorts)
+3. **Latest YouTube Videos** – Embedded YouTube videos (hardcoded channel video IDs or YouTube channel link)
+4. **Viral Shorts** – Trending YouTube Shorts embedded
+5. **Photo Gallery** – Lifestyle photo grid (use uploaded creator image + placeholders)
+6. **Collaboration / Brand Deals** – Section for brands to contact, benefits of working with Dhiraj
+7. **Contact** – Phone 7419820519, WhatsApp button, social media links
+
+### Features
+- YouTube subscribe popup (appears after 3 seconds)
+- Social media follower counters (static display)
+- Floating WhatsApp button
+- Mobile bottom sticky bar with Subscribe + WhatsApp
+- SEO meta tags: YouTube Creator, Indian YouTuber, Dhiraj Bundiwal Channel, Vlog YouTube Channel
+- JSON-LD Person/YouTuber schema
+
+### Contact Info
+- Phone/WhatsApp: 7419820519
+- YouTube: @DhirajBundiwal
+- Creator photo: /assets/uploads/Screenshot_2026-03-11-18-23-12-09_f9ee0578fe1cc94de7482bd41accb329-1.jpg

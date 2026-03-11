@@ -9,32 +9,44 @@
 import { IDL } from '@icp-sdk/core/candid';
 
 export const Time = IDL.Int;
-export const Inquiry = IDL.Record({
+export const Submission = IDL.Record({
   'name' : IDL.Text,
+  'email' : IDL.Text,
+  'company' : IDL.Text,
   'message' : IDL.Text,
   'timestamp' : Time,
   'phone' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
-  'getAllInquiries' : IDL.Func([], [IDL.Vec(Inquiry)], ['query']),
-  'submitInquiry' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+  'getAllSubmissions' : IDL.Func([], [IDL.Vec(Submission)], ['query']),
+  'submitForm' : IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
   const Time = IDL.Int;
-  const Inquiry = IDL.Record({
+  const Submission = IDL.Record({
     'name' : IDL.Text,
+    'email' : IDL.Text,
+    'company' : IDL.Text,
     'message' : IDL.Text,
     'timestamp' : Time,
     'phone' : IDL.Text,
   });
   
   return IDL.Service({
-    'getAllInquiries' : IDL.Func([], [IDL.Vec(Inquiry)], ['query']),
-    'submitInquiry' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+    'getAllSubmissions' : IDL.Func([], [IDL.Vec(Submission)], ['query']),
+    'submitForm' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
   });
 };
 

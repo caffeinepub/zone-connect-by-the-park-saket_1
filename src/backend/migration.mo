@@ -1,54 +1,43 @@
 import List "mo:core/List";
-import Text "mo:core/Text";
-import Time "mo:core/Time";
 
 module {
-  type OldActor = {
-    inquiryList : List.List<OldInquiry>;
-  };
-
-  type OldInquiry = {
-    coupleNames : Text;
-    weddingDate : Time.Time;
-    phoneNumber : Text;
-    serviceType : OldServiceType;
-    message : Text;
-    timestamp : Time.Time;
-  };
-
-  type OldServiceType = {
-    #weddingPhotography;
-    #preWeddingShoot;
-    #candidPhotography;
-    #cinematicFilm;
-    #bridalPortrait;
-    #destinationWedding;
-  };
-
-  type NewActor = {
-    inquiryList : List.List<NewInquiry>;
-  };
-
-  type NewInquiry = {
+  type OldSubmission = {
     name : Text;
     phone : Text;
     message : Text;
-    timestamp : Time.Time;
+    timestamp : Int;
+  };
+
+  type OldActor = {
+    inquiryList : List.List<OldSubmission>;
+  };
+
+  type NewSubmission = {
+    name : Text;
+    email : Text;
+    phone : Text;
+    company : Text;
+    message : Text;
+    timestamp : Int;
+  };
+
+  type NewActor = {
+    submissionList : List.List<NewSubmission>;
   };
 
   public func run(old : OldActor) : NewActor {
-    let newInquiryList = List.empty<NewInquiry>();
-    old.inquiryList.forEach(
-      func(oldInquiry) {
-        let newInquiry : NewInquiry = {
-          name = oldInquiry.coupleNames;
-          phone = oldInquiry.phoneNumber;
-          message = oldInquiry.message;
-          timestamp = oldInquiry.timestamp;
-        };
-        newInquiryList.add(newInquiry);
-      }
-    );
-    { inquiryList = newInquiryList };
+    let newSubmissionList = List.empty<NewSubmission>();
+    for (oldSubmission in old.inquiryList.values()) {
+      let newSubmission : NewSubmission = {
+        name = oldSubmission.name;
+        email = "unknown";
+        phone = oldSubmission.phone;
+        company = "unknown";
+        message = oldSubmission.message;
+        timestamp = oldSubmission.timestamp;
+      };
+      newSubmissionList.add(newSubmission);
+    };
+    { submissionList = newSubmissionList };
   };
 };

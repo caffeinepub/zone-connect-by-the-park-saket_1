@@ -2,77 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Fraunces (Display Serif) ── */
+/* ── Bricolage Grotesque (Display) ── */
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+}
+
+/* ── Outfit (Body) ── */
+@font-face {
+  font-family: "Outfit";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  src: url("/assets/fonts/Outfit.woff2") format("woff2");
 }
 
-/* ── Playfair Display ── */
+/* ── Sora (Accent) ── */
 @font-face {
-  font-family: "Playfair Display";
+  font-family: "Sora";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 100 800;
   font-display: swap;
-  src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
-}
-
-/* ── Figtree (Body) ── */
-@font-face {
-  font-family: "Figtree";
-  font-style: normal;
-  font-weight: 300 900;
-  font-display: swap;
-  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  src: url("/assets/fonts/Sora.woff2") format("woff2");
 }
 
 @layer base {
   :root {
-    /* ── Harish Pure Honey – Warm Golden & Nature Green Theme ── */
-    --background: 0.97 0.012 88;
-    --foreground: 0.18 0.02 50;
+    /* ── Dhiraj Bundiwal – Dark Neon Creator Theme ── */
+    --background: 0.08 0 0;
+    --foreground: 0.95 0.01 80;
 
-    --card: 1 0 0;
-    --card-foreground: 0.18 0.02 50;
+    --card: 0.12 0.005 0;
+    --card-foreground: 0.95 0.01 80;
 
-    --popover: 1 0 0;
-    --popover-foreground: 0.18 0.02 50;
+    --popover: 0.1 0.005 0;
+    --popover-foreground: 0.95 0.01 80;
 
-    --primary: 0.62 0.14 58;
+    /* Neon Red primary */
+    --primary: 0.58 0.22 27;
     --primary-foreground: 1 0 0;
 
-    --secondary: 0.92 0.025 90;
-    --secondary-foreground: 0.18 0.02 50;
+    --secondary: 0.15 0.01 0;
+    --secondary-foreground: 0.9 0.01 80;
 
-    --muted: 0.94 0.012 88;
-    --muted-foreground: 0.5 0.02 60;
+    --muted: 0.18 0.01 0;
+    --muted-foreground: 0.55 0.01 80;
 
-    --accent: 0.38 0.1 155;
+    /* Electric Purple accent */
+    --accent: 0.55 0.22 305;
     --accent-foreground: 1 0 0;
 
-    --destructive: 0.55 0.22 25;
+    --destructive: 0.55 0.22 27;
     --destructive-foreground: 1 0 0;
 
-    --border: 0.88 0.025 85;
-    --input: 0.92 0.015 88;
-    --ring: 0.62 0.14 58;
+    --border: 0.22 0.01 0;
+    --input: 0.16 0.01 0;
+    --ring: 0.58 0.22 27;
 
-    /* ── Honey Palette ── */
-    --honey-light: 0.88 0.13 85;
-    --honey: 0.72 0.16 60;
-    --honey-dark: 0.55 0.17 50;
-    --honey-amber: 0.65 0.18 55;
+    /* ── Neon Palette ── */
+    --neon-red: 0.6 0.25 27;
+    --neon-red-glow: 0.65 0.28 27;
+    --neon-yellow: 0.88 0.18 90;
+    --neon-purple: 0.55 0.24 305;
+    --neon-green: 0.72 0.22 145;
 
-    /* ── Nature Green Palette ── */
-    --green-light: 0.75 0.12 155;
-    --green: 0.45 0.13 155;
-    --green-dark: 0.32 0.11 155;
-
-    --cream: 0.97 0.012 88;
-    --warm-white: 0.99 0.005 90;
+    --dark-base: 0.06 0 0;
+    --dark-card: 0.1 0.005 0;
+    --dark-surface: 0.14 0.008 0;
 
     --radius: 0.5rem;
   }
@@ -88,7 +87,8 @@
   }
 
   body {
-    @apply bg-cream text-foreground font-body;
+    @apply bg-background text-foreground font-body;
+    background-color: #0a0a0a;
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -104,131 +104,163 @@
   }
 }
 
+/* ── Neon Glow Utilities ── */
 @layer utilities {
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s
-      cubic-bezier(0.22, 1, 0.36, 1);
+  .neon-red {
+    text-shadow: 0 0 10px oklch(0.65 0.28 27), 0 0 30px oklch(0.55 0.22 27), 0 0
+      60px oklch(0.45 0.18 27);
   }
-  .animate-on-scroll.in-view {
-    opacity: 1;
-    transform: translateY(0);
+  .neon-yellow {
+    text-shadow: 0 0 10px oklch(0.92 0.2 90), 0 0 30px oklch(0.85 0.17 90);
   }
-  .delay-100 {
-    transition-delay: 0.1s;
-  }
-  .delay-200 {
-    transition-delay: 0.2s;
-  }
-  .delay-300 {
-    transition-delay: 0.3s;
-  }
-  .delay-400 {
-    transition-delay: 0.4s;
+  .neon-purple {
+    text-shadow: 0 0 10px oklch(0.65 0.26 305), 0 0 30px oklch(0.55 0.22 305);
   }
 
-  .honey-shimmer {
+  .glow-border-red {
+    box-shadow: 0 0 15px oklch(0.55 0.22 27 / 0.7), 0 0 40px
+      oklch(0.55 0.22 27 / 0.3), inset 0 0 15px oklch(0.55 0.22 27 / 0.05);
+    border: 1px solid oklch(0.55 0.22 27 / 0.6);
+  }
+  .glow-border-purple {
+    box-shadow: 0 0 15px oklch(0.55 0.24 305 / 0.7), 0 0 40px
+      oklch(0.55 0.24 305 / 0.3), inset 0 0 15px oklch(0.55 0.24 305 / 0.05);
+    border: 1px solid oklch(0.55 0.24 305 / 0.6);
+  }
+  .glow-border-yellow {
+    box-shadow: 0 0 15px oklch(0.88 0.18 90 / 0.6), 0 0 40px
+      oklch(0.88 0.18 90 / 0.25);
+    border: 1px solid oklch(0.88 0.18 90 / 0.5);
+  }
+
+  .gradient-text {
     background: linear-gradient(
-      105deg,
-      oklch(0.72 0.16 60) 0%,
-      oklch(0.88 0.13 85) 40%,
-      oklch(0.72 0.16 60) 60%,
-      oklch(0.55 0.17 50) 100%
+      135deg,
+      oklch(0.72 0.25 27),
+      oklch(0.65 0.24 305),
+      oklch(0.88 0.18 90)
     );
-    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 5s linear infinite;
   }
 
-  .honey-text {
-    color: oklch(0.62 0.16 58);
+  .neon-grid-bg {
+    background-image: linear-gradient(
+        oklch(0.55 0.22 27 / 0.06) 1px,
+        transparent 1px
+      ), linear-gradient(90deg, oklch(0.55 0.22 27 / 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 
-  .green-text {
-    color: oklch(0.38 0.12 155);
+  .creator-photo-glow {
+    box-shadow: 0 0 0 3px oklch(0.6 0.25 27), 0 0 30px oklch(0.6 0.25 27 / 0.6),
+      0 0 80px oklch(0.55 0.22 27 / 0.3);
   }
 
-  .whatsapp-pulse::before {
+  .btn-neon-red {
+    background: oklch(0.55 0.22 27);
+    box-shadow: 0 0 20px oklch(0.55 0.22 27 / 0.6), 0 0 40px
+      oklch(0.55 0.22 27 / 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-neon-red:hover {
+    background: oklch(0.62 0.25 27);
+    box-shadow: 0 0 30px oklch(0.62 0.25 27 / 0.8), 0 0 60px
+      oklch(0.55 0.22 27 / 0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-neon-purple {
+    background: transparent;
+    border: 1px solid oklch(0.55 0.24 305);
+    box-shadow: 0 0 15px oklch(0.55 0.24 305 / 0.4), inset 0 0 15px
+      oklch(0.55 0.24 305 / 0.05);
+    transition: all 0.3s ease;
+  }
+  .btn-neon-purple:hover {
+    background: oklch(0.55 0.24 305 / 0.15);
+    box-shadow: 0 0 25px oklch(0.55 0.24 305 / 0.7), 0 0 50px
+      oklch(0.55 0.24 305 / 0.4);
+    transform: translateY(-2px);
+  }
+
+  .card-dark {
+    background: oklch(0.1 0.005 0);
+    border: 1px solid oklch(0.22 0.01 0);
+    transition: all 0.3s ease;
+  }
+  .card-dark:hover {
+    border-color: oklch(0.55 0.22 27 / 0.5);
+    box-shadow: 0 0 20px oklch(0.55 0.22 27 / 0.2);
+  }
+
+  .whatsapp-pulse {
+    animation: whatsapp-pulse 2s ease-in-out infinite;
+  }
+  @keyframes whatsapp-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 oklch(0.72 0.22 145 / 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 15px oklch(0.72 0.22 145 / 0);
+    }
+  }
+
+  .float-in {
+    animation: float-in 0.6s ease-out forwards;
+  }
+  @keyframes float-in {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-title-glow {
+    position: relative;
+  }
+  .section-title-glow::after {
     content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    background: rgba(37, 211, 102, 0.3);
-    animation: pulse-ring 2.5s ease-in-out infinite;
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, oklch(0.6 0.25 27), oklch(0.55 0.24 305));
+    border-radius: 2px;
+    margin: 12px auto 0;
+    box-shadow: 0 0 12px oklch(0.6 0.25 27 / 0.8);
   }
 
-  .section-divider {
+  .neon-tag {
+    background: oklch(0.55 0.22 27 / 0.12);
+    border: 1px solid oklch(0.55 0.22 27 / 0.4);
+    color: oklch(0.75 0.18 27);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .gallery-img {
+    transition: all 0.3s ease;
+  }
+  .gallery-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px oklch(0.55 0.24 305 / 0.6);
+    filter: brightness(1.1);
+  }
+
+  .stats-glow {
     background: linear-gradient(
-      90deg,
-      transparent,
-      oklch(0.72 0.16 60 / 0.4),
-      transparent
+      135deg,
+      oklch(0.6 0.25 27 / 0.15),
+      oklch(0.55 0.24 305 / 0.1)
     );
-    height: 1px;
-  }
-
-  .hex-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23D4820A' fill-opacity='0.06' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse-ring {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes ken-burns {
-  0% {
-    transform: scale(1.0);
-  }
-  100% {
-    transform: scale(1.08);
-  }
-}
-
-@keyframes accordion-down {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-  }
-}
-
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-  to {
-    height: 0;
+    border: 1px solid oklch(0.6 0.25 27 / 0.3);
   }
 }

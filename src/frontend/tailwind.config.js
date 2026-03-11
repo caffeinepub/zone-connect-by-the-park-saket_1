@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Fraunces", "Playfair Display", "Georgia", "serif"],
-        serif2: ["Playfair Display", "Georgia", "serif"],
-        body: ["Figtree", "system-ui", "sans-serif"],
+        display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
+        body: ["Outfit", "system-ui", "sans-serif"],
+        accent: ["Sora", "system-ui", "sans-serif"],
       },
       colors: {
         background: "oklch(var(--background))",
@@ -52,18 +52,17 @@ export default {
         border: "oklch(var(--border))",
         input: "oklch(var(--input))",
         ring: "oklch(var(--ring))",
-        honey: {
-          light: "oklch(var(--honey-light))",
-          DEFAULT: "oklch(var(--honey))",
-          dark: "oklch(var(--honey-dark))",
-          amber: "oklch(var(--honey-amber))",
+        neon: {
+          red: "oklch(var(--neon-red))",
+          yellow: "oklch(var(--neon-yellow))",
+          purple: "oklch(var(--neon-purple))",
+          green: "oklch(var(--neon-green))",
         },
-        green: {
-          light: "oklch(var(--green-light))",
-          DEFAULT: "oklch(var(--green))",
-          dark: "oklch(var(--green-dark))",
+        dark: {
+          base: "oklch(var(--dark-base))",
+          card: "oklch(var(--dark-card))",
+          surface: "oklch(var(--dark-surface))",
         },
-        cream: "oklch(var(--cream))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -79,40 +78,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in-up": {
-          from: { opacity: "0", transform: "translateY(30px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        "ken-burns": {
-          "0%": { transform: "scale(1.0)" },
-          "100%": { transform: "scale(1.08)" },
-        },
-        "pulse-ring": {
-          "0%, 100%": { opacity: "1", transform: "scale(1)" },
-          "50%": { opacity: "0.4", transform: "scale(1.2)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in-up": "fade-in-up 0.9s cubic-bezier(0.22,1,0.36,1) forwards",
-        "fade-in": "fade-in 1.2s ease-out forwards",
-        float: "float 4s ease-in-out infinite",
-        shimmer: "shimmer 5s linear infinite",
-        "ken-burns": "ken-burns 14s ease-out forwards",
-        "pulse-ring": "pulse-ring 2.5s ease-in-out infinite",
       },
     },
   },
