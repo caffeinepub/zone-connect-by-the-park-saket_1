@@ -8,27 +8,23 @@ export interface None {
 }
 export type Option<T> = Some<T> | None;
 export interface Inquiry {
-    checkIn: Time;
-    name: string;
-    email: string;
+    weddingDate: Time;
+    serviceType: ServiceType;
     message: string;
     timestamp: Time;
-    checkOut: Time;
-    phone: string;
-    roomType: string;
+    coupleNames: string;
+    phoneNumber: string;
 }
 export type Time = bigint;
-export interface SpecialOffer {
-    title: string;
-    active: boolean;
-    description: string;
-    discountPercentage: bigint;
-    validUntil: Time;
+export enum ServiceType {
+    destinationWedding = "destinationWedding",
+    bridalPortrait = "bridalPortrait",
+    candidPhotography = "candidPhotography",
+    weddingPhotography = "weddingPhotography",
+    preWeddingShoot = "preWeddingShoot",
+    cinematicFilm = "cinematicFilm"
 }
 export interface backendInterface {
-    addSpecialOffer(title: string, description: string, discountPercentage: bigint, validUntil: Time): Promise<void>;
-    getActiveOffers(): Promise<Array<SpecialOffer>>;
     getAllInquiries(): Promise<Array<Inquiry>>;
-    getInquiryCount(): Promise<bigint>;
-    submitInquiry(name: string, email: string, phone: string, checkIn: Time, checkOut: Time, roomType: string, message: string): Promise<void>;
+    submitInquiry(coupleNames: string, weddingDate: Time, phoneNumber: string, serviceType: ServiceType, message: string): Promise<void>;
 }

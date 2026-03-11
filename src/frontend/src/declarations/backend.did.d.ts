@@ -11,30 +11,24 @@ import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
 export interface Inquiry {
-  'checkIn' : Time,
-  'name' : string,
-  'email' : string,
+  'weddingDate' : Time,
+  'serviceType' : ServiceType,
   'message' : string,
   'timestamp' : Time,
-  'checkOut' : Time,
-  'phone' : string,
-  'roomType' : string,
+  'coupleNames' : string,
+  'phoneNumber' : string,
 }
-export interface SpecialOffer {
-  'title' : string,
-  'active' : boolean,
-  'description' : string,
-  'discountPercentage' : bigint,
-  'validUntil' : Time,
-}
+export type ServiceType = { 'destinationWedding' : null } |
+  { 'bridalPortrait' : null } |
+  { 'candidPhotography' : null } |
+  { 'weddingPhotography' : null } |
+  { 'preWeddingShoot' : null } |
+  { 'cinematicFilm' : null };
 export type Time = bigint;
 export interface _SERVICE {
-  'addSpecialOffer' : ActorMethod<[string, string, bigint, Time], undefined>,
-  'getActiveOffers' : ActorMethod<[], Array<SpecialOffer>>,
   'getAllInquiries' : ActorMethod<[], Array<Inquiry>>,
-  'getInquiryCount' : ActorMethod<[], bigint>,
   'submitInquiry' : ActorMethod<
-    [string, string, string, Time, Time, string, string],
+    [string, Time, string, ServiceType, string],
     undefined
   >,
 }

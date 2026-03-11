@@ -9,31 +9,27 @@
 import { IDL } from '@icp-sdk/core/candid';
 
 export const Time = IDL.Int;
-export const SpecialOffer = IDL.Record({
-  'title' : IDL.Text,
-  'active' : IDL.Bool,
-  'description' : IDL.Text,
-  'discountPercentage' : IDL.Nat,
-  'validUntil' : Time,
+export const ServiceType = IDL.Variant({
+  'destinationWedding' : IDL.Null,
+  'bridalPortrait' : IDL.Null,
+  'candidPhotography' : IDL.Null,
+  'weddingPhotography' : IDL.Null,
+  'preWeddingShoot' : IDL.Null,
+  'cinematicFilm' : IDL.Null,
 });
 export const Inquiry = IDL.Record({
-  'checkIn' : Time,
-  'name' : IDL.Text,
-  'email' : IDL.Text,
+  'weddingDate' : Time,
+  'serviceType' : ServiceType,
   'message' : IDL.Text,
   'timestamp' : Time,
-  'checkOut' : Time,
-  'phone' : IDL.Text,
-  'roomType' : IDL.Text,
+  'coupleNames' : IDL.Text,
+  'phoneNumber' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
-  'addSpecialOffer' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat, Time], [], []),
-  'getActiveOffers' : IDL.Func([], [IDL.Vec(SpecialOffer)], ['query']),
   'getAllInquiries' : IDL.Func([], [IDL.Vec(Inquiry)], ['query']),
-  'getInquiryCount' : IDL.Func([], [IDL.Nat], ['query']),
   'submitInquiry' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, Time, Time, IDL.Text, IDL.Text],
+      [IDL.Text, Time, IDL.Text, ServiceType, IDL.Text],
       [],
       [],
     ),
@@ -43,31 +39,27 @@ export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
   const Time = IDL.Int;
-  const SpecialOffer = IDL.Record({
-    'title' : IDL.Text,
-    'active' : IDL.Bool,
-    'description' : IDL.Text,
-    'discountPercentage' : IDL.Nat,
-    'validUntil' : Time,
+  const ServiceType = IDL.Variant({
+    'destinationWedding' : IDL.Null,
+    'bridalPortrait' : IDL.Null,
+    'candidPhotography' : IDL.Null,
+    'weddingPhotography' : IDL.Null,
+    'preWeddingShoot' : IDL.Null,
+    'cinematicFilm' : IDL.Null,
   });
   const Inquiry = IDL.Record({
-    'checkIn' : Time,
-    'name' : IDL.Text,
-    'email' : IDL.Text,
+    'weddingDate' : Time,
+    'serviceType' : ServiceType,
     'message' : IDL.Text,
     'timestamp' : Time,
-    'checkOut' : Time,
-    'phone' : IDL.Text,
-    'roomType' : IDL.Text,
+    'coupleNames' : IDL.Text,
+    'phoneNumber' : IDL.Text,
   });
   
   return IDL.Service({
-    'addSpecialOffer' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat, Time], [], []),
-    'getActiveOffers' : IDL.Func([], [IDL.Vec(SpecialOffer)], ['query']),
     'getAllInquiries' : IDL.Func([], [IDL.Vec(Inquiry)], ['query']),
-    'getInquiryCount' : IDL.Func([], [IDL.Nat], ['query']),
     'submitInquiry' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, Time, Time, IDL.Text, IDL.Text],
+        [IDL.Text, Time, IDL.Text, ServiceType, IDL.Text],
         [],
         [],
       ),

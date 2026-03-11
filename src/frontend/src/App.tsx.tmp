@@ -28,10 +28,10 @@ import {
   Star,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiWhatsapp } from "react-icons/si";
 import { toast } from "sonner";
-import { useActor } from "./hooks/useActor";
+import useActor from "./hooks/useActor";
 
 const queryClient = new QueryClient();
 
@@ -50,7 +50,7 @@ function useScrollAnimation() {
           }
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
     );
     for (const el of elements) {
       observer.observe(el);
@@ -62,7 +62,7 @@ function useScrollAnimation() {
 function GoldDivider() {
   return (
     <span
-      className="mx-3 inline-flex items-center"
+      className="mx-3 text-gold-DEFAULT inline-flex items-center"
       style={{ color: "oklch(0.76 0.12 80)" }}
     >
       <Diamond size={8} fill="currentColor" />
@@ -70,38 +70,8 @@ function GoldDivider() {
   );
 }
 
-/** Reusable section label with expanding lines */
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <div className="flex items-center justify-center gap-5 mb-5">
-      <div
-        className="h-px animate-line-expand"
-        style={{ width: "60px", backgroundColor: "oklch(0.76 0.12 80 / 0.7)" }}
-      />
-      <span
-        className="text-xs tracking-[0.28em] uppercase"
-        style={{ color: "oklch(0.76 0.12 80)", fontFamily: "General Sans" }}
-      >
-        {label}
-      </span>
-      <div
-        className="h-px animate-line-expand"
-        style={{ width: "60px", backgroundColor: "oklch(0.76 0.12 80 / 0.7)" }}
-      />
-    </div>
-  );
-}
-
 function Navigation() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
   const navLinks = [
     "Portfolio",
     "About",
@@ -112,20 +82,14 @@ function Navigation() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-      style={{
-        backgroundColor: scrolled ? "rgba(8,6,4,0.96)" : "rgba(8,6,4,0.4)",
-        backdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
-        borderBottom: scrolled
-          ? "1px solid oklch(0.76 0.12 80 / 0.18)"
-          : "1px solid transparent",
-      }}
+      className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b"
+      style={{ borderColor: "oklch(0.76 0.12 80 / 0.2)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <a
             href="#top"
-            className="font-display text-lg font-semibold tracking-wide"
+            className="font-display text-xl font-semibold tracking-wide"
             style={{ color: "oklch(0.76 0.12 80)" }}
           >
             Dheeraj Bundiwal
@@ -138,23 +102,23 @@ function Navigation() {
                 key={link}
                 href={`#${link.toLowerCase()}`}
                 data-ocid="nav.link"
-                className="relative text-xs tracking-[0.14em] uppercase text-white/60 hover:text-white transition-colors duration-200 group"
-                style={{ fontFamily: "General Sans" }}
+                className="text-sm tracking-widest uppercase text-white/70 hover:text-white transition-colors duration-200"
+                style={{
+                  fontFamily: "General Sans, sans-serif",
+                  letterSpacing: "0.12em",
+                }}
               >
                 {link}
-                <span
-                  className="absolute -bottom-0.5 left-0 w-0 h-px group-hover:w-full transition-all duration-300"
-                  style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
-                />
               </a>
             ))}
             <a
               href="#contact"
               data-ocid="nav.primary_button"
-              className="text-xs tracking-[0.12em] uppercase px-5 py-2.5 font-medium transition-all duration-300 hover:brightness-110"
+              className="text-xs tracking-widest uppercase px-5 py-2.5 border font-medium transition-all duration-300 hover:bg-opacity-90"
               style={{
-                color: "oklch(0.08 0 0)",
+                color: "oklch(0.12 0 0)",
                 backgroundColor: "oklch(0.76 0.12 80)",
+                borderColor: "oklch(0.76 0.12 80)",
                 letterSpacing: "0.1em",
               }}
             >
@@ -177,11 +141,8 @@ function Navigation() {
       {/* Mobile menu */}
       {open && (
         <div
-          className="md:hidden border-t"
-          style={{
-            backgroundColor: "rgba(8,6,4,0.98)",
-            borderColor: "oklch(0.76 0.12 80 / 0.15)",
-          }}
+          className="md:hidden bg-black border-t"
+          style={{ borderColor: "oklch(0.76 0.12 80 / 0.2)" }}
         >
           <div className="px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
@@ -190,8 +151,8 @@ function Navigation() {
                 href={`#${link.toLowerCase()}`}
                 data-ocid="nav.link"
                 onClick={() => setOpen(false)}
-                className="text-sm tracking-widest uppercase text-white/60 hover:text-white py-2 transition-colors"
-                style={{ letterSpacing: "0.12em", fontFamily: "General Sans" }}
+                className="text-sm tracking-widest uppercase text-white/70 hover:text-white py-2 transition-colors"
+                style={{ letterSpacing: "0.12em" }}
               >
                 {link}
               </a>
@@ -206,195 +167,56 @@ function Navigation() {
 function HeroSection() {
   return (
     <section
-      id="top"
-      className="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden"
+      className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage:
+          "url('/assets/generated/hero-wedding.dim_1920x1080.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      {/* Ken Burns background */}
-      <div
-        className="absolute inset-0 animate-ken-burns"
-        style={{
-          backgroundImage:
-            "url('/assets/generated/hero-wedding.dim_1920x1080.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 35%",
-          transformOrigin: "center center",
-        }}
-      />
-
-      {/* Cinematic multi-layer gradient */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: [
-            "linear-gradient(to bottom, rgba(4,3,2,0.72) 0%, rgba(4,3,2,0.18) 40%, rgba(4,3,2,0.28) 65%, rgba(4,3,2,0.88) 100%)",
-          ].join(", "),
-        }}
-      />
-      {/* Warm golden vignette from bottom */}
+      {/* Dark overlay */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 90% 55% at 50% 110%, oklch(0.62 0.12 72 / 0.18) 0%, transparent 70%)",
-        }}
-      />
-      {/* Left atmospheric shadow */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to right, rgba(4,3,2,0.45) 0%, transparent 50%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.65) 100%)",
         }}
       />
 
-      {/* Decorative corner ornaments */}
-      <div
-        className="absolute top-24 left-8 hidden lg:block"
-        style={{ opacity: 0.35 }}
-      >
-        <div
-          className="w-12 h-12 border-l border-t"
-          style={{ borderColor: "oklch(0.76 0.12 80)" }}
-        />
-      </div>
-      <div
-        className="absolute top-24 right-8 hidden lg:block"
-        style={{ opacity: 0.35 }}
-      >
-        <div
-          className="w-12 h-12 border-r border-t"
-          style={{ borderColor: "oklch(0.76 0.12 80)" }}
-        />
-      </div>
-      <div
-        className="absolute bottom-24 left-8 hidden lg:block"
-        style={{ opacity: 0.35 }}
-      >
-        <div
-          className="w-12 h-12 border-l border-b"
-          style={{ borderColor: "oklch(0.76 0.12 80)" }}
-        />
-      </div>
-      <div
-        className="absolute bottom-24 right-8 hidden lg:block"
-        style={{ opacity: 0.35 }}
-      >
-        <div
-          className="w-12 h-12 border-r border-b"
-          style={{ borderColor: "oklch(0.76 0.12 80)" }}
-        />
-      </div>
-
-      {/* Thin horizontal gold accent lines */}
-      <div
-        className="absolute left-8 right-8 hidden lg:block"
-        style={{
-          top: "calc(50% - 180px)",
-          height: "1px",
-          background:
-            "linear-gradient(to right, transparent 0%, oklch(0.76 0.12 80 / 0.25) 20%, oklch(0.76 0.12 80 / 0.25) 80%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute left-8 right-8 hidden lg:block"
-        style={{
-          top: "calc(50% + 170px)",
-          height: "1px",
-          background:
-            "linear-gradient(to right, transparent 0%, oklch(0.76 0.12 80 / 0.25) 20%, oklch(0.76 0.12 80 / 0.25) 80%, transparent 100%)",
-        }}
-      />
-
-      {/* Hero content */}
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        {/* Pre-headline label */}
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <p
-          className="text-xs tracking-[0.38em] uppercase mb-8"
-          style={{
-            color: "oklch(0.76 0.12 80)",
-            fontFamily: "General Sans",
-            opacity: 0,
-            animation:
-              "fade-in-up 1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards",
-          }}
+          className="text-xs tracking-[0.3em] uppercase mb-6 animate-fade-in"
+          style={{ color: "oklch(0.76 0.12 80)", animationDelay: "0.3s" }}
         >
-          Premium Wedding Photography&nbsp;&nbsp;·&nbsp;&nbsp;Haryana
+          Premium Wedding Photography · Haryana
         </p>
-
-        {/* Main headline — dramatic weight contrast */}
         <h1
-          style={{
-            opacity: 0,
-            animation:
-              "fade-in-up 1.1s cubic-bezier(0.22,1,0.36,1) 0.55s forwards",
-            textShadow: "0 4px 40px rgba(0,0,0,0.6)",
-          }}
+          className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white leading-tight mb-6"
+          style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}
         >
-          <span
-            className="block font-display font-semibold text-white leading-none tracking-[-0.02em]"
-            style={{ fontSize: "clamp(2.8rem, 7.5vw, 7rem)" }}
-          >
-            Capturing Love
-          </span>
-          <span
-            className="block font-display font-light italic leading-none tracking-[-0.01em]"
-            style={{
-              fontSize: "clamp(2.8rem, 7.5vw, 7rem)",
-              color: "oklch(0.90 0.10 88)",
-            }}
-          >
-            Stories That Last
-          </span>
-          <span
-            className="block font-display font-semibold text-white leading-none tracking-[-0.02em]"
-            style={{ fontSize: "clamp(2.8rem, 7.5vw, 7rem)" }}
-          >
-            Forever
+          Capturing Love Stories
+          <br />
+          <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
+            That Last Forever
           </span>
         </h1>
-
-        {/* Thin gold ornamental line */}
-        <div
-          className="mx-auto my-8"
-          style={{
-            height: "1px",
-            width: "80px",
-            background:
-              "linear-gradient(to right, transparent, oklch(0.76 0.12 80), transparent)",
-            opacity: 0,
-            animation: "fade-in 1s ease-out 1.1s forwards",
-          }}
-        />
-
         <p
-          className="text-sm md:text-base tracking-[0.22em] uppercase mb-12 text-white/75"
-          style={{
-            fontFamily: "General Sans",
-            opacity: 0,
-            animation:
-              "fade-in-up 1s cubic-bezier(0.22,1,0.36,1) 0.85s forwards",
-          }}
+          className="text-base md:text-lg tracking-[0.2em] uppercase mb-10 text-white/80"
+          style={{ fontFamily: "General Sans, sans-serif" }}
         >
-          Weddings · Pre-Wedding · Cinematic Films · Haryana &amp; Delhi NCR
+          Premium Wedding Photography in Haryana
         </p>
 
-        {/* CTAs */}
-        <div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-          style={{
-            opacity: 0,
-            animation:
-              "fade-in-up 1s cubic-bezier(0.22,1,0.36,1) 1.05s forwards",
-          }}
-        >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="#contact"
             data-ocid="hero.primary_button"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 text-xs tracking-[0.18em] uppercase font-semibold transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5"
+            className="inline-block px-8 py-4 text-sm tracking-[0.15em] uppercase font-medium transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5"
             style={{
               backgroundColor: "oklch(0.76 0.12 80)",
-              color: "oklch(0.08 0 0)",
-              fontFamily: "General Sans",
+              color: "oklch(0.10 0 0)",
+              letterSpacing: "0.12em",
             }}
           >
             Check Wedding Date Availability
@@ -404,14 +226,8 @@ function HeroSection() {
             target="_blank"
             rel="noopener noreferrer"
             data-ocid="hero.secondary_button"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xs tracking-[0.18em] uppercase font-medium transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/12"
-            style={{
-              fontFamily: "General Sans",
-              border: "1px solid rgba(255,255,255,0.55)",
-              color: "white",
-              backdropFilter: "blur(4px)",
-              backgroundColor: "rgba(255,255,255,0.05)",
-            }}
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm tracking-[0.15em] uppercase font-medium border border-white/70 text-white hover:border-white hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
+            style={{ letterSpacing: "0.12em" }}
           >
             <SiWhatsapp size={16} className="text-green-400" />
             Book Consultation on WhatsApp
@@ -420,22 +236,16 @@ function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{
-          opacity: 0,
-          animation: "fade-in 1.2s ease-out 1.6s forwards",
-        }}
-      >
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <span
-          className="text-xs tracking-[0.22em] uppercase text-white/35"
+          className="text-xs tracking-[0.2em] uppercase text-white/40"
           style={{ fontFamily: "General Sans" }}
         >
           Scroll
         </span>
         <ChevronDown
-          size={18}
-          className="text-white/35 animate-scroll-bounce"
+          size={20}
+          className="text-white/40 animate-scroll-bounce"
         />
       </div>
     </section>
@@ -455,16 +265,16 @@ function ServicesStrip() {
     <div
       className="py-5 border-y overflow-hidden"
       style={{
-        backgroundColor: "oklch(0.08 0.003 60)",
-        borderColor: "oklch(0.76 0.12 80 / 0.22)",
+        backgroundColor: "oklch(0.08 0 0)",
+        borderColor: "oklch(0.76 0.12 80 / 0.25)",
       }}
     >
       <div className="flex flex-wrap items-center justify-center gap-0 px-4">
         {services.map((service, i) => (
           <span key={service} className="flex items-center">
             <span
-              className="text-xs tracking-[0.22em] uppercase px-4 py-1 text-white/55"
-              style={{ fontFamily: "General Sans" }}
+              className="text-xs tracking-[0.2em] uppercase px-4 py-1 text-white/60"
+              style={{ fontFamily: "General Sans, sans-serif" }}
             >
               {service}
             </span>
@@ -543,20 +353,32 @@ function PortfolioSection() {
   return (
     <section
       id="portfolio"
-      className="py-28 px-4"
-      style={{ backgroundColor: "oklch(0.10 0.002 60)" }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.10 0 0)" }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16 animate-on-scroll">
-          <SectionLabel label="Portfolio" />
-          <h2
-            className="font-display font-light text-white"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
-          >
-            A Glimpse of{" "}
-            <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
-              Our Stories
+        <div className="text-center mb-14 animate-on-scroll">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+            <span
+              className="text-xs tracking-[0.25em] uppercase"
+              style={{
+                color: "oklch(0.76 0.12 80)",
+                fontFamily: "General Sans",
+              }}
+            >
+              Portfolio
             </span>
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-white">
+            A Glimpse of Our Stories
           </h2>
         </div>
 
@@ -564,7 +386,7 @@ function PortfolioSection() {
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList
               className="border gap-1 p-1 bg-transparent"
-              style={{ borderColor: "oklch(0.76 0.12 80 / 0.28)" }}
+              style={{ borderColor: "oklch(0.76 0.12 80 / 0.3)" }}
             >
               {[
                 { v: "all", l: "All" },
@@ -576,11 +398,11 @@ function PortfolioSection() {
                   key={v}
                   value={v}
                   data-ocid="portfolio.tab"
-                  className="text-xs tracking-widest uppercase px-4 py-2 transition-all"
+                  className="text-xs tracking-widest uppercase px-4 py-2 data-[state=active]:text-black data-[state=active]:bg-gold-DEFAULT transition-all"
                   style={{
                     fontFamily: "General Sans",
                     color:
-                      activeTab === v ? "oklch(0.10 0 0)" : "oklch(0.60 0 0)",
+                      activeTab === v ? "oklch(0.10 0 0)" : "oklch(0.65 0 0)",
                     backgroundColor:
                       activeTab === v ? "oklch(0.76 0.12 80)" : "transparent",
                   }}
@@ -592,34 +414,28 @@ function PortfolioSection() {
           </Tabs>
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-3 space-y-3">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
           {filtered.map((img, i) => (
             <div
               key={`${img.src}-${i}`}
               data-ocid={`portfolio.item.${i + 1}`}
               className="group relative overflow-hidden break-inside-avoid cursor-pointer"
-              style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.4)" }}
             >
               <img
                 src={img.src}
                 alt={img.label}
-                className="w-full object-cover transition-transform duration-700 group-hover:scale-106"
+                className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 style={{ display: "block" }}
               />
-              {/* Gold shimmer line on hover */}
               <div
-                className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
-                style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
-              />
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-5"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(4,3,2,0.85) 0%, rgba(201,168,76,0.08) 100%)",
+                    "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(201,168,76,0.15) 100%)",
                 }}
               >
                 <span
-                  className="text-xs tracking-[0.22em] uppercase text-white/90"
+                  className="text-xs tracking-[0.2em] uppercase text-white"
                   style={{ fontFamily: "General Sans" }}
                 >
                   {img.label}
@@ -635,17 +451,17 @@ function PortfolioSection() {
 
 function AboutSection() {
   const stats = [
-    { label: "Weddings Captured", value: "500+" },
-    { label: "Years Experience", value: "12+" },
-    { label: "Service Area", value: "Haryana & NCR" },
-    { label: "Style", value: "Cinematic" },
+    "500+ Weddings",
+    "12+ Years Experience",
+    "Haryana & Delhi NCR",
+    "Cinematic Storytelling",
   ];
 
   return (
     <section
       id="about"
-      className="py-28 px-4"
-      style={{ backgroundColor: "oklch(0.08 0.003 60)" }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.08 0 0)" }}
     >
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -656,25 +472,20 @@ function AboutSection() {
               className="w-full object-cover"
               style={{ maxHeight: "600px" }}
             />
-            {/* Gold offset frame */}
+            {/* Gold accent frame */}
             <div
-              className="absolute -bottom-5 -right-5 w-2/3 h-2/3 border pointer-events-none"
-              style={{ borderColor: "oklch(0.76 0.12 80 / 0.45)" }}
-            />
-            {/* Small gold accent top-left */}
-            <div
-              className="absolute -top-5 -left-5 w-10 h-10 border-l-2 border-t-2 pointer-events-none"
-              style={{ borderColor: "oklch(0.76 0.12 80)" }}
+              className="absolute -bottom-4 -right-4 w-2/3 h-2/3 border pointer-events-none"
+              style={{ borderColor: "oklch(0.76 0.12 80 / 0.4)" }}
             />
           </div>
 
           <div className="animate-on-scroll animate-on-scroll-delay-2">
             <div
-              className="h-0.5 w-14 mb-6"
+              className="h-0.5 w-12 mb-6"
               style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
             />
             <p
-              className="text-xs tracking-[0.28em] uppercase mb-3"
+              className="text-xs tracking-[0.25em] uppercase mb-3"
               style={{
                 color: "oklch(0.76 0.12 80)",
                 fontFamily: "General Sans",
@@ -682,18 +493,12 @@ function AboutSection() {
             >
               About the Photographer
             </p>
-            <h2
-              className="font-display font-light text-white mb-6"
-              style={{ fontSize: "clamp(1.9rem, 3.5vw, 3rem)" }}
-            >
-              Meet{" "}
-              <span className="italic" style={{ color: "oklch(0.90 0.10 88)" }}>
-                Dheeraj Bundiwal
-              </span>
+            <h2 className="font-display text-4xl md:text-5xl font-light text-white mb-6">
+              Meet Dheeraj Bundiwal
             </h2>
             <p
-              className="text-white/72 leading-[1.9] mb-8 text-base"
-              style={{ fontFamily: "General Sans" }}
+              className="text-white/70 leading-relaxed mb-8"
+              style={{ fontFamily: "General Sans", lineHeight: "1.9" }}
             >
               With over a decade of experience capturing the most intimate
               wedding moments across Haryana and Delhi NCR, Dheeraj Bundiwal has
@@ -704,40 +509,20 @@ function AboutSection() {
               truly understands love.
             </p>
 
-            {/* Stats — elevated design */}
-            <div
-              className="grid grid-cols-2 gap-px border"
-              style={{ borderColor: "oklch(0.76 0.12 80 / 0.2)" }}
-            >
-              {stats.map((stat, i) => (
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-4 mt-8">
+              {stats.map((stat) => (
                 <div
-                  key={stat.label}
-                  className="px-5 py-4"
-                  style={{
-                    backgroundColor:
-                      i % 2 === 0
-                        ? "oklch(0.12 0.005 60)"
-                        : "oklch(0.11 0.003 60)",
-                    borderRight:
-                      i % 2 === 0
-                        ? "1px solid oklch(0.76 0.12 80 / 0.15)"
-                        : "none",
-                    borderBottom:
-                      i < 2 ? "1px solid oklch(0.76 0.12 80 / 0.15)" : "none",
-                  }}
+                  key={stat}
+                  className="border px-4 py-3"
+                  style={{ borderColor: "oklch(0.76 0.12 80 / 0.3)" }}
                 >
-                  <p
-                    className="font-display font-semibold text-2xl mb-0.5"
-                    style={{ color: "oklch(0.76 0.12 80)" }}
-                  >
-                    {stat.value}
-                  </p>
-                  <p
-                    className="text-xs tracking-[0.12em] uppercase text-white/45"
+                  <span
+                    className="text-xs tracking-[0.15em] uppercase text-white/60"
                     style={{ fontFamily: "General Sans" }}
                   >
-                    {stat.label}
-                  </p>
+                    {stat}
+                  </span>
                 </div>
               ))}
             </div>
@@ -752,7 +537,7 @@ function PackagesSection() {
   const packages = [
     {
       name: "Silver",
-      badge: "Perfect Start",
+      badge: "Most Popular",
       highlight: false,
       features: [
         "1-Day Wedding Coverage",
@@ -771,7 +556,7 @@ function PackagesSection() {
         "2-Day Coverage (Mehendi + Wedding)",
         "3 Professional Photographers",
         "800+ Edited Photos",
-        "Cinematic Highlight Video (3–5 min)",
+        "Cinematic Highlight Video (3-5 min)",
         "Premium Wedding Album",
         "Online Gallery & Same-Day Preview",
       ],
@@ -786,7 +571,7 @@ function PackagesSection() {
         "1200+ Edited Photos",
         "Full Wedding Film (15+ min)",
         "Pre-Wedding Shoot Included",
-        "Premium Album + Drone Shots + Luxury Box",
+        "Premium Hardbound Album + Drone Shots + Luxury Box",
       ],
     },
   ];
@@ -794,91 +579,72 @@ function PackagesSection() {
   return (
     <section
       id="packages"
-      className="py-28 px-4"
-      style={{
-        backgroundColor: "oklch(0.10 0.002 60)",
-        backgroundImage:
-          "radial-gradient(ellipse 60% 45% at 50% 100%, oklch(0.62 0.12 72 / 0.07) 0%, transparent 70%)",
-      }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.10 0 0)" }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 animate-on-scroll">
-          <SectionLabel label="Packages" />
-          <h2
-            className="font-display font-light text-white mb-3"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
-          >
-            Our Wedding{" "}
-            <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
+        <div className="text-center mb-14 animate-on-scroll">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+            <span
+              className="text-xs tracking-[0.25em] uppercase"
+              style={{
+                color: "oklch(0.76 0.12 80)",
+                fontFamily: "General Sans",
+              }}
+            >
               Packages
             </span>
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-white mb-3">
+            Our Wedding Packages
           </h2>
-          <p
-            className="text-white/55 mt-3"
-            style={{ fontFamily: "General Sans" }}
-          >
+          <p className="text-white/50" style={{ fontFamily: "General Sans" }}>
             Every love story deserves to be told beautifully
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-0">
+        <div className="grid md:grid-cols-3 gap-6">
           {packages.map((pkg, i) => (
             <div
               key={pkg.name}
               data-ocid={`packages.item.${i + 1}`}
-              className="relative flex flex-col hover-lift animate-on-scroll"
+              className="relative flex flex-col animate-on-scroll"
               style={{
-                animationDelay: `${i * 0.12}s`,
+                animationDelay: `${i * 0.15}s`,
                 border: pkg.highlight
                   ? "1px solid oklch(0.76 0.12 80)"
-                  : "1px solid oklch(0.22 0.005 60)",
+                  : "1px solid oklch(0.25 0 0)",
                 backgroundColor: pkg.highlight
-                  ? "oklch(0.135 0.012 68)"
-                  : "oklch(0.12 0.005 60)",
-                marginTop: pkg.highlight ? "-12px" : "0",
-                marginBottom: pkg.highlight ? "-12px" : "0",
-                zIndex: pkg.highlight ? 10 : 1,
-                ...(pkg.highlight
-                  ? {
-                      boxShadow: [
-                        "0 0 0 1px oklch(0.76 0.12 80 / 0.7)",
-                        "0 0 50px oklch(0.76 0.12 80 / 0.10)",
-                        "0 0 100px oklch(0.76 0.12 80 / 0.05)",
-                        "inset 0 1px 0 oklch(0.90 0.10 88 / 0.12)",
-                      ].join(", "),
-                    }
-                  : {}),
+                  ? "oklch(0.14 0 0)"
+                  : "oklch(0.12 0 0)",
               }}
             >
-              {/* Top accent for highlight */}
-              {pkg.highlight && (
-                <div
-                  className="h-0.5 w-full"
-                  style={{
-                    background:
-                      "linear-gradient(to right, transparent, oklch(0.76 0.12 80), transparent)",
-                  }}
-                />
-              )}
-
               {/* Badge */}
               {pkg.badge && (
                 <div
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1"
-                  style={{
-                    backgroundColor: pkg.highlight
-                      ? "oklch(0.76 0.12 80)"
-                      : "oklch(0.18 0.005 60)",
-                    color: pkg.highlight
-                      ? "oklch(0.08 0 0)"
-                      : "oklch(0.76 0.12 80)",
-                    border: pkg.highlight
-                      ? "none"
-                      : "1px solid oklch(0.76 0.12 80 / 0.4)",
-                  }}
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1"
+                  style={
+                    pkg.highlight
+                      ? {
+                          backgroundColor: "oklch(0.76 0.12 80)",
+                          color: "oklch(0.10 0 0)",
+                        }
+                      : {
+                          backgroundColor: "oklch(0.20 0 0)",
+                          color: "oklch(0.76 0.12 80)",
+                        }
+                  }
                 >
                   <span
-                    className="text-xs tracking-widest uppercase font-semibold"
+                    className="text-xs tracking-widest uppercase font-medium"
                     style={{ fontFamily: "General Sans" }}
                   >
                     {pkg.badge}
@@ -886,23 +652,23 @@ function PackagesSection() {
                 </div>
               )}
 
-              <div className="p-8 lg:p-10 flex flex-col flex-1">
+              <div className="p-8 flex flex-col flex-1">
                 <h3
-                  className="font-display font-light text-3xl mb-0.5"
+                  className="font-display text-3xl font-light mb-1"
                   style={{
-                    color: pkg.highlight ? "oklch(0.82 0.12 82)" : "white",
+                    color: pkg.highlight ? "oklch(0.76 0.12 80)" : "white",
                   }}
                 >
                   {pkg.name}
                 </h3>
                 <p
-                  className="text-xs tracking-[0.2em] uppercase mb-8 text-white/35"
+                  className="text-xs tracking-[0.2em] uppercase mb-8 text-white/40"
                   style={{ fontFamily: "General Sans" }}
                 >
                   Package
                 </p>
 
-                <ul className="space-y-3.5 flex-1 mb-10">
+                <ul className="space-y-3 flex-1 mb-8">
                   {pkg.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
                       <CheckCircle
@@ -911,7 +677,7 @@ function PackagesSection() {
                         style={{ color: "oklch(0.76 0.12 80)" }}
                       />
                       <span
-                        className="text-sm text-white/70 leading-snug"
+                        className="text-sm text-white/70"
                         style={{ fontFamily: "General Sans" }}
                       >
                         {feature}
@@ -922,14 +688,14 @@ function PackagesSection() {
 
                 <a
                   href="#contact"
-                  className="block text-center py-3.5 text-xs tracking-[0.18em] uppercase font-semibold transition-all duration-300 hover:brightness-110"
+                  className="block text-center py-3 text-sm tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-90"
                   style={{
                     fontFamily: "General Sans",
                     backgroundColor: pkg.highlight
                       ? "oklch(0.76 0.12 80)"
                       : "transparent",
                     color: pkg.highlight
-                      ? "oklch(0.08 0 0)"
+                      ? "oklch(0.10 0 0)"
                       : "oklch(0.76 0.12 80)",
                     border: pkg.highlight
                       ? "none"
@@ -972,77 +738,70 @@ function TestimonialsSection() {
   return (
     <section
       id="testimonials"
-      className="py-28 px-4 relative overflow-hidden"
-      style={{
-        backgroundColor: "oklch(0.08 0.003 60)",
-        backgroundImage:
-          "radial-gradient(ellipse 70% 50% at 50% 50%, oklch(0.62 0.12 72 / 0.05) 0%, transparent 70%)",
-      }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.08 0 0)" }}
     >
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16 animate-on-scroll">
-          <SectionLabel label="Testimonials" />
-          <h2
-            className="font-display font-light text-white"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
-          >
-            Love Stories{" "}
-            <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
-              We&apos;ve Captured
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-14 animate-on-scroll">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+            <span
+              className="text-xs tracking-[0.25em] uppercase"
+              style={{
+                color: "oklch(0.76 0.12 80)",
+                fontFamily: "General Sans",
+              }}
+            >
+              Testimonials
             </span>
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-white">
+            Love Stories We've Captured
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <div
               key={t.couple}
               data-ocid={`testimonials.item.${i + 1}`}
-              className="relative p-8 pt-10 animate-on-scroll hover-lift"
+              className="p-8 animate-on-scroll"
               style={{
                 animationDelay: `${i * 0.15}s`,
-                backgroundColor: "oklch(0.12 0.005 60)",
-                border: "1px solid oklch(0.22 0.005 60)",
+                backgroundColor: "oklch(0.12 0 0)",
+                border: "1px solid oklch(0.25 0 0)",
               }}
             >
-              {/* Large decorative quotation mark */}
-              <div
-                className="absolute top-5 left-7 font-display font-bold leading-none select-none pointer-events-none"
-                style={{
-                  fontSize: "6rem",
-                  color: "oklch(0.76 0.12 80 / 0.12)",
-                  lineHeight: 1,
-                }}
-              >
-                &ldquo;
-              </div>
-
               {/* Stars */}
-              <div className="flex gap-1 mb-5 relative z-10">
-                {["s1", "s2", "s3", "s4", "s5"].map((sk) => (
-                  <Star
-                    key={sk}
-                    size={13}
-                    fill="currentColor"
-                    style={{ color: "oklch(0.76 0.12 80)" }}
-                  />
-                ))}
-              </div>
-
-              <p className="text-white/75 leading-relaxed mb-8 font-serif2 italic text-base relative z-10">
-                &ldquo;{t.text}&rdquo;
+              <div className="flex gap-1 mb-6">
+              <p className="text-white/70 leading-relaxed mb-8 italic font-display text-lg font-light">
+                "{t.text}"
               </p>
 
-              <div className="flex items-center gap-3 relative z-10">
+              <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-display font-semibold text-sm"
+                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.62 0.12 72) 0%, oklch(0.82 0.12 82) 100%)",
-                    color: "oklch(0.08 0 0)",
+                    backgroundColor: "oklch(0.76 0.12 80 / 0.2)",
+                    border: "1px solid oklch(0.76 0.12 80 / 0.5)",
                   }}
                 >
-                  {t.initials}
+                  <span
+                    className="text-xs font-medium"
+                    style={{
+                      color: "oklch(0.76 0.12 80)",
+                      fontFamily: "General Sans",
+                    }}
+                  >
+                    {t.initials}
+                  </span>
                 </div>
                 <div>
                   <p
@@ -1093,20 +852,32 @@ function WhyChooseSection() {
 
   return (
     <section
-      className="py-28 px-4"
-      style={{ backgroundColor: "oklch(0.10 0.002 60)" }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.10 0 0)" }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 animate-on-scroll">
-          <SectionLabel label="Our Promise" />
-          <h2
-            className="font-display font-light text-white"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
-          >
-            Why Couples{" "}
-            <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
-              Choose Us
+        <div className="text-center mb-14 animate-on-scroll">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+            <span
+              className="text-xs tracking-[0.25em] uppercase"
+              style={{
+                color: "oklch(0.76 0.12 80)",
+                fontFamily: "General Sans",
+              }}
+            >
+              Our Promise
             </span>
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-white">
+            Why Couples Choose Us
           </h2>
         </div>
 
@@ -1114,23 +885,20 @@ function WhyChooseSection() {
           {features.map((f, i) => (
             <div
               key={f.title}
-              className="text-center animate-on-scroll group"
+              className="text-center animate-on-scroll"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               <div
-                className="w-14 h-14 mx-auto mb-5 flex items-center justify-center border transition-all duration-300 group-hover:border-opacity-100"
-                style={{
-                  borderColor: "oklch(0.76 0.12 80 / 0.4)",
-                  backgroundColor: "oklch(0.76 0.12 80 / 0.05)",
-                }}
+                className="w-14 h-14 mx-auto mb-5 flex items-center justify-center border"
+                style={{ borderColor: "oklch(0.76 0.12 80 / 0.4)" }}
               >
                 <f.icon size={22} style={{ color: "oklch(0.76 0.12 80)" }} />
               </div>
-              <h3 className="font-display font-medium text-xl text-white mb-3">
+              <h3 className="font-display text-xl font-light text-white mb-3">
                 {f.title}
               </h3>
               <p
-                className="text-sm text-white/58 leading-relaxed"
+                className="text-sm text-white/50 leading-relaxed"
                 style={{ fontFamily: "General Sans" }}
               >
                 {f.desc}
@@ -1186,24 +954,35 @@ function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-28 px-4"
-      style={{ backgroundColor: "oklch(0.08 0.003 60)" }}
+      className="py-24 px-4"
+      style={{ backgroundColor: "oklch(0.08 0 0)" }}
     >
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14 animate-on-scroll">
-          <SectionLabel label="Get in Touch" />
-          <h2
-            className="font-display font-light text-white mb-3"
-            style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}
-          >
-            Check Your Wedding Date{" "}
-            <span className="italic" style={{ color: "oklch(0.88 0.10 85)" }}>
-              Availability
+        <div className="text-center mb-12 animate-on-scroll">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+            <span
+              className="text-xs tracking-[0.25em] uppercase"
+              style={{
+                color: "oklch(0.76 0.12 80)",
+                fontFamily: "General Sans",
+              }}
+            >
+              Get in Touch
             </span>
+            <div
+              className="h-px w-16"
+              style={{ backgroundColor: "oklch(0.76 0.12 80)" }}
+            />
+          </div>
+          <h2 className="font-display text-4xl md:text-5xl font-light text-white mb-3">
+            Check Your Wedding Date Availability
           </h2>
-          <p className="text-white/55" style={{ fontFamily: "General Sans" }}>
-            Fill in your details and we&apos;ll confirm availability within 24
-            hours
+          <p className="text-white/50" style={{ fontFamily: "General Sans" }}>
+            Fill in your details and we'll confirm availability within 24 hours
           </p>
         </div>
 
@@ -1212,8 +991,8 @@ function ContactSection() {
             data-ocid="contact.success_state"
             className="text-center py-16 animate-on-scroll"
             style={{
-              border: "1px solid oklch(0.76 0.12 80 / 0.45)",
-              backgroundColor: "oklch(0.12 0.005 60)",
+              border: "1px solid oklch(0.76 0.12 80 / 0.4)",
+              backgroundColor: "oklch(0.12 0 0)",
             }}
           >
             <CheckCircle
@@ -1225,8 +1004,7 @@ function ContactSection() {
               Thank You!
             </h3>
             <p className="text-white/60" style={{ fontFamily: "General Sans" }}>
-              Your inquiry has been received. We&apos;ll reach out within 24
-              hours.
+              Your inquiry has been received. We'll reach out within 24 hours.
             </p>
           </div>
         ) : (
@@ -1235,8 +1013,8 @@ function ContactSection() {
             className="space-y-5 animate-on-scroll"
             style={{
               padding: "2.5rem",
-              border: "1px solid oklch(0.22 0.005 60)",
-              backgroundColor: "oklch(0.11 0.005 60)",
+              border: "1px solid oklch(0.25 0 0)",
+              backgroundColor: "oklch(0.11 0 0)",
             }}
           >
             <div className="grid sm:grid-cols-2 gap-5">
@@ -1255,9 +1033,9 @@ function ContactSection() {
                   }
                   placeholder="e.g. Priya & Rahul"
                   required
-                  className="bg-transparent border text-white placeholder:text-white/20 focus-visible:ring-0 rounded-none h-11"
+                  className="bg-transparent border text-white placeholder:text-white/20 focus-visible:ring-0 focus-visible:border-opacity-100 rounded-none h-11"
                   style={{
-                    borderColor: "oklch(0.28 0.005 60)",
+                    borderColor: "oklch(0.28 0 0)",
                     outlineColor: "oklch(0.76 0.12 80)",
                   }}
                 />
@@ -1277,7 +1055,7 @@ function ContactSection() {
                   }
                   required
                   className="bg-transparent border text-white placeholder:text-white/20 rounded-none h-11"
-                  style={{ borderColor: "oklch(0.28 0.005 60)" }}
+                  style={{ borderColor: "oklch(0.28 0 0)" }}
                 />
               </div>
             </div>
@@ -1299,7 +1077,7 @@ function ContactSection() {
                   placeholder="+91 XXXXX XXXXX"
                   required
                   className="bg-transparent border text-white placeholder:text-white/20 rounded-none h-11"
-                  style={{ borderColor: "oklch(0.28 0.005 60)" }}
+                  style={{ borderColor: "oklch(0.28 0 0)" }}
                 />
               </div>
               <div className="space-y-2">
@@ -1318,14 +1096,14 @@ function ContactSection() {
                 >
                   <SelectTrigger
                     className="bg-transparent border text-white rounded-none h-11"
-                    style={{ borderColor: "oklch(0.28 0.005 60)" }}
+                    style={{ borderColor: "oklch(0.28 0 0)" }}
                   >
                     <SelectValue placeholder="Select service" />
                   </SelectTrigger>
                   <SelectContent
                     style={{
-                      backgroundColor: "oklch(0.14 0.005 60)",
-                      borderColor: "oklch(0.28 0.005 60)",
+                      backgroundColor: "oklch(0.14 0 0)",
+                      borderColor: "oklch(0.28 0 0)",
                     }}
                   >
                     <SelectItem value="weddingPhotography">
@@ -1366,7 +1144,7 @@ function ContactSection() {
                 placeholder="Tell us about your wedding vision, venue, or any special requests..."
                 rows={4}
                 className="bg-transparent border text-white placeholder:text-white/20 rounded-none resize-none"
-                style={{ borderColor: "oklch(0.28 0.005 60)" }}
+                style={{ borderColor: "oklch(0.28 0 0)" }}
               />
             </div>
 
@@ -1374,11 +1152,11 @@ function ContactSection() {
               type="submit"
               data-ocid="contact.submit_button"
               disabled={mutation.isPending}
-              className="w-full py-4 text-xs tracking-[0.18em] uppercase font-semibold transition-all duration-300 hover:brightness-110 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-4 text-sm tracking-[0.15em] uppercase font-medium transition-all duration-300 hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
               style={{
                 fontFamily: "General Sans",
                 backgroundColor: "oklch(0.76 0.12 80)",
-                color: "oklch(0.08 0 0)",
+                color: "oklch(0.10 0 0)",
               }}
             >
               {mutation.isPending && (
@@ -1397,7 +1175,7 @@ function ContactSection() {
             target="_blank"
             rel="noopener noreferrer"
             data-ocid="contact.primary_button"
-            className="flex-1 flex items-center justify-center gap-2 py-4 text-xs tracking-[0.14em] uppercase font-semibold transition-all duration-300 hover:brightness-110"
+            className="flex-1 flex items-center justify-center gap-2 py-4 text-sm tracking-[0.12em] uppercase font-medium transition-all duration-300 hover:opacity-90"
             style={{
               fontFamily: "General Sans",
               backgroundColor: "#25D366",
@@ -1410,7 +1188,7 @@ function ContactSection() {
           <a
             href={PHONE_URL}
             data-ocid="contact.secondary_button"
-            className="flex-1 flex items-center justify-center gap-2 py-4 text-xs tracking-[0.14em] uppercase font-semibold border transition-all duration-300 hover:bg-white/5"
+            className="flex-1 flex items-center justify-center gap-2 py-4 text-sm tracking-[0.12em] uppercase font-medium border transition-all duration-300 hover:bg-white/5"
             style={{
               fontFamily: "General Sans",
               borderColor: "oklch(0.76 0.12 80 / 0.6)",
@@ -1432,8 +1210,8 @@ function Footer() {
     <footer
       className="py-16 px-4"
       style={{
-        backgroundColor: "oklch(0.06 0.003 60)",
-        borderTop: "1px solid oklch(0.76 0.12 80 / 0.12)",
+        backgroundColor: "oklch(0.06 0 0)",
+        borderTop: "1px solid oklch(0.76 0.12 80 / 0.15)",
       }}
     >
       <div className="max-w-6xl mx-auto">
@@ -1441,12 +1219,12 @@ function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <h3
-              className="font-display text-xl font-semibold mb-2"
+              className="font-display text-xl font-semibold mb-3"
               style={{ color: "oklch(0.76 0.12 80)" }}
             >
               Dheeraj Bundiwal
             </h3>
-            <p className="font-display text-sm font-light text-white/35 italic mb-5">
+            <p className="font-display text-sm font-light text-white/40 italic mb-4">
               Capturing Love Stories That Last Forever
             </p>
             <div className="flex gap-3">
@@ -1455,7 +1233,7 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 flex items-center justify-center border transition-colors hover:border-green-400"
-                style={{ borderColor: "oklch(0.28 0 0)" }}
+                style={{ borderColor: "oklch(0.30 0 0)" }}
               >
                 <SiWhatsapp size={16} className="text-green-400" />
               </a>
@@ -1463,7 +1241,7 @@ function Footer() {
                 href={PHONE_URL}
                 className="w-9 h-9 flex items-center justify-center border transition-colors"
                 style={{
-                  borderColor: "oklch(0.28 0 0)",
+                  borderColor: "oklch(0.30 0 0)",
                   color: "oklch(0.76 0.12 80)",
                 }}
               >
@@ -1475,7 +1253,7 @@ function Footer() {
           {/* Quick Links */}
           <div>
             <h4
-              className="text-xs tracking-[0.2em] uppercase text-white/45 mb-4"
+              className="text-xs tracking-[0.2em] uppercase text-white/50 mb-4"
               style={{ fontFamily: "General Sans" }}
             >
               Quick Links
@@ -1504,7 +1282,7 @@ function Footer() {
           {/* Services */}
           <div>
             <h4
-              className="text-xs tracking-[0.2em] uppercase text-white/45 mb-4"
+              className="text-xs tracking-[0.2em] uppercase text-white/50 mb-4"
               style={{ fontFamily: "General Sans" }}
             >
               Services
@@ -1520,7 +1298,7 @@ function Footer() {
               ].map((s) => (
                 <li key={s}>
                   <span
-                    className="text-sm text-white/38"
+                    className="text-sm text-white/40"
                     style={{ fontFamily: "General Sans" }}
                   >
                     {s}
@@ -1533,7 +1311,7 @@ function Footer() {
           {/* Contact */}
           <div>
             <h4
-              className="text-xs tracking-[0.2em] uppercase text-white/45 mb-4"
+              className="text-xs tracking-[0.2em] uppercase text-white/50 mb-4"
               style={{ fontFamily: "General Sans" }}
             >
               Contact
@@ -1574,14 +1352,14 @@ function Footer() {
 
         <div
           className="pt-8 border-t"
-          style={{ borderColor: "oklch(0.76 0.12 80 / 0.08)" }}
+          style={{ borderColor: "oklch(0.76 0.12 80 / 0.1)" }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p
-              className="text-xs text-white/28"
+              className="text-xs text-white/30"
               style={{ fontFamily: "General Sans" }}
             >
-              &copy; {year} Dheeraj Bundiwal Wedding Photography. All rights
+              © {year} Dheeraj Bundiwal Wedding Photography. All rights
               reserved.
             </p>
             <a
@@ -1595,7 +1373,7 @@ function Footer() {
             </a>
           </div>
           <p
-            className="text-xs text-white/12 mt-4 text-center"
+            className="text-xs text-white/15 mt-4 text-center"
             style={{ fontFamily: "General Sans" }}
           >
             Wedding Photographer Bhiwani | Best Wedding Photographer Haryana |
@@ -1618,9 +1396,10 @@ function FloatingWhatsApp() {
       style={{ backgroundColor: "#25D366" }}
       aria-label="Chat on WhatsApp"
     >
+      {/* Pulse ring */}
       <span
         className="absolute inset-0 rounded-full animate-pulse-slow"
-        style={{ backgroundColor: "rgba(37,211,102,0.32)" }}
+        style={{ backgroundColor: "rgba(37,211,102,0.35)" }}
       />
       <SiWhatsapp size={26} color="white" className="relative z-10" />
     </a>
@@ -1702,6 +1481,7 @@ function SEOHead() {
     setMeta("og:type", "website", true);
     setMeta("twitter:card", "summary_large_image");
 
+    // JSON-LD schema
     let script = document.getElementById("jsonld-schema") as HTMLScriptElement;
     if (!script) {
       script = document.createElement("script");
@@ -1736,8 +1516,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SEOHead />
       <div
-        className="min-h-screen grain-texture"
-        style={{ backgroundColor: "oklch(0.10 0.002 60)" }}
+        className="min-h-screen"
+        style={{ backgroundColor: "oklch(0.10 0 0)" }}
       >
         <Navigation />
         <main>
